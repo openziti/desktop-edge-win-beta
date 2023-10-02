@@ -5,6 +5,7 @@ on:
     branches: 
       - master
       - 'release-*'
+      - 'new-ui-branch'
 
 env:
   BUILD_CONFIG: "Release"
