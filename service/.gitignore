@@ -1,6 +1,0 @@
-build/
-install/
-*.exe
-
-#files related to the service that shouldn't be pushed
-NFWintunInstaller.msi

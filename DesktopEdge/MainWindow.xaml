@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ZitiDesktopEdge"
+        xmlns:debug="clr-namespace:Ziti.Desktop.Edge.Views.Screens"
+        xmlns:i="clr-namespace:Lada.Windows.Input;assembly=WpfMouseWheelLib"
         mc:Ignorable="d"
         ShowInTaskbar="False"
         x:Name="MainUI"
@@ -12,7 +14,13 @@
         ClipToBounds="False"
         Icon="Assets/Images/icon.png" AllowsTransparency="True" 
         Closing="Window_Closing"
-        WindowStyle="None" Loaded="MainWindow_Loaded" Background="#000F0F23">
+        i:MouseWheel.Enhanced="True"
+        i:MouseWheel.LogicalScrollDebouncing="Auto"
+        i:MouseWheel.LogicalScrollIncrement="1"
+        i:MouseWheel.ScrollMode="Auto"
+        WindowStyle="None" Loaded="MainWindow_Loaded" Background="#000F0F23"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        >
     <Window.Resources>
         <Style TargetType="Image">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
@@ -113,7 +121,7 @@
         </Canvas>
         <Border Margin="10,10,10,10" Name="UIBorder" BorderBrush="Black" BorderThickness="8" CornerRadius="10">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="20" Direction="1" RenderingBias="Quality" ShadowDepth="1" Opacity="1"/>
+                <DropShadowEffect BlurRadius="15" Direction="1" RenderingBias="Quality" ShadowDepth="1" Opacity="1"/>
             </Border.Effect>
         </Border>
         <Rectangle Margin="10,10,10,10" Name="BgColor" Stroke="Black" RadiusY="10" RadiusX="10" ClipToBounds="True">
@@ -143,7 +151,7 @@
                     <Label Content="IDENTITY" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="White" Height="25" Margin="0,-14,0,0" FontSize="10" HorizontalAlignment="Right"></Label>
                 </StackPanel>
             </Grid>
-            <Canvas Name="ConnectButton" Width="400" Height="160" MouseUp="ConnectButtonClick" Visibility="Visible">
+            <Canvas Name="ConnectButton" Width="400" Height="160" MouseUp="StartZitiService" Visibility="Collapsed">
                 <Grid Width="{Binding ActualWidth, ElementName=ConnectButton}" Height="140">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="221*"/>
@@ -193,8 +201,9 @@
                     <Label Name="UploadSpeedLabel" Foreground="White" Margin="0,-20,0,30" Content="KBps" FontSize="11" HorizontalAlignment="Center" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" />
                 </StackPanel>
             </Grid>
-            <ScrollViewer Name="IdListScroller" ScrollViewer.HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" CanContentScroll="True" ClipToBounds="True">
-                <StackPanel Name="IdList" Orientation="Vertical" LayoutUpdated="IdList_LayoutUpdated"></StackPanel>
+
+            <ScrollViewer Name="IdListScroller" MinHeight="60" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" FocusVisualStyle="{x:Null}" CanContentScroll="True" ClipToBounds="True" PanningMode="VerticalOnly" PanningRatio=".1">
+                <StackPanel Name="IdList" Orientation="Vertical" IsItemsHost="False" LayoutUpdated="IdList_LayoutUpdated" FocusVisualStyle="{x:Null}"></StackPanel>
             </ScrollViewer>
             <Grid HorizontalAlignment="Stretch" Margin="0,20,0,10" Width="Auto">
                 <Grid.ColumnDefinitions>
@@ -203,10 +212,51 @@
                 <Label Name="AddIdButton" Padding="0,0,0,20" Grid.Column="0" Margin="0,0,0,20" Content="Add Identity" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="#0069FF" FontSize="16" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="AddIdentity"></Label>
             </Grid>
         </StackPanel>
-        
+        <Canvas x:Name="AlertCanvas" ClipToBounds="False" Visibility="Collapsed">
+            <Image Source="/Assets/Images/UpdateWarn.png" Canvas.Left="50" Canvas.Top="32" Width="14" Height="14"></Image>
+        </Canvas>
+        <!-- Form for debugging -->
+        <debug:Debugging x:Name="DebugForm" Visibility="Collapsed" />
+        <!-- Menu UI -->
         <local:MainMenu x:Name="MainMenu" Visibility="Collapsed"></local:MainMenu>
-        <local:IdentityDetails x:Name="IdentityMenu" Visibility="Collapsed"></local:IdentityDetails>
-        
+        <!-- ID Detail UI -->
+        <local:IdentityDetails x:Name="IdentityMenu" Visibility="Collapsed" OnMFAToggled="MFAToggled" Authenticate="ShowAuthenticate" Recovery="ShowRecovery" OnLoading="DoLoading" OnShowMFA="ShowAuthenticate"></local:IdentityDetails>
+
+        <!-- Modal Background -->
+        <Rectangle x:Name="ModalBg" MouseDown="Window_MouseDown" Margin="10,10,10,10" Fill="Black" RadiusY="10" RadiusX="10" Opacity="0" Visibility="Collapsed"></Rectangle>
+        <!-- MFA Setup Prompt -->
+        <local:MFAScreen x:Name="MFASetup" Visibility="Collapsed" Margin="0,0,0,0" OnClose="DoClose"></local:MFAScreen>
+
+        <!-- Small messages screen that opens at the bottom -->
+        <Grid x:Name="BlurbArea" Visibility="Collapsed" Height="80" Margin="0,500,0,0" VerticalAlignment="Bottom">
+            <Border Margin="10,10,10,10" BorderBrush="Black" BorderThickness="8" CornerRadius="10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" Direction="1" RenderingBias="Quality" ShadowDepth="1" Opacity="1"/>
+                </Border.Effect>
+            </Border>
+            <Rectangle Margin="10,10,10,10" RadiusX="10" RadiusY="10" ClipToBounds="True">
+                <Rectangle.Fill>
+                    <SolidColorBrush Color="#FFFFFF" Opacity="0.97"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <Grid Margin="30,0,30,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="30"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Image x:Name="RedBlurb" Source="/Assets/Images/WarningRed.png" Grid.Column="0" Width="30" Grid.Row="1" Height="30" Margin="0,0,0,0"></Image>
+                <Image x:Name="InfoBlurb" Visibility="Collapsed" Source="/Assets/Images/Warning.png" Grid.Column="0" Width="30" Grid.Row="1" Height="30" Margin="0,0,0,0"></Image>
+                <Label x:Name="Blurb" Content="An Update is available!" MouseUp="BlurbAction" Grid.Column="1" Padding="0,0,0,0" Grid.Row="1" Margin="0,0,0,0" FontFamily="pack://application:,,,/Assets/Fonts/#Open Sans" Foreground="#000000" FontSize="12" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+                <Image Source="/Assets/Images/closeBlack.png" Grid.Column="2" Width="10" Height="10" Grid.Row="1" Margin="0,0,0,0" Cursor="Hand" MouseUp="DoHideBlurb"></Image>
+            </Grid> 
+        </Grid>
+
         <Grid x:Name="NoServiceView" Visibility="Collapsed" Margin="10,10,10,10">
             <Rectangle RadiusX="10" RadiusY="10">
                 <Rectangle.Fill>
@@ -247,8 +297,8 @@
                 </Grid>
             </Grid>
         </Grid>
-        
-        <Grid x:Name="LoadingScreen" Visibility="Collapsed" Margin="10,10,10,10">
+
+        <Grid x:Name="LoadingScreen" MouseDown="Window_MouseDown" Visibility="Collapsed" Margin="10,10,10,10">
             <Rectangle RadiusX="10" RadiusY="10">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.9"/>
@@ -273,7 +323,7 @@
             </Grid>
         </Grid>
 
-        <Grid x:Name="ErrorView" Visibility="Collapsed" Margin="10,10,10,10">
+        <Grid x:Name="ErrorView" MouseDown="Window_MouseDown" Visibility="Collapsed" Margin="10,10,10,10">
             <Rectangle RadiusX="10" RadiusY="10">
                 <Rectangle.Fill>
                     <SolidColorBrush Color="Black" Opacity="0.9"/>
@@ -320,4 +370,7 @@
             </Grid>
         </Grid>
     </Grid>
+    <Window.InputBindings>
+        <KeyBinding x:Name="ShowDebug" Command="{Binding SomeCommand}" Key="F12" />
+    </Window.InputBindings>
 </Window>

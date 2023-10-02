@@ -15,7 +15,7 @@ namespace ZitiUpdateService {
 		/// The main entry point for the application.
 		/// </summary>
 		static void Main() {
-			var asm = System.Reflection.Assembly.GetExecutingAssembly();
+			var asm = Assembly.GetExecutingAssembly();
 			var logname = asm.GetName().Name;
 
 			var curdir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -33,7 +33,7 @@ namespace ZitiUpdateService {
 					ArchiveEvery = FileArchivePeriod.Day,
 					ArchiveNumbering = ArchiveNumberingMode.Rolling,
 					MaxArchiveFiles = 7,
-					Layout = "[${date:format=yyyy-MM-ddTHH:mm:ss.fff}Z] ${level:uppercase=true:padding=5}\t${logger}\t${message}\t${exception:format=tostring}",
+					Layout = "[${date:universalTime=true:format=yyyy-MM-ddTHH:mm:ss.fff}Z] ${level:uppercase=true:padding=5}\t${logger}\t${message}\t${exception:format=tostring}",
 				};
 				var logconsole = new ConsoleTarget("logconsole");
 
@@ -44,14 +44,17 @@ namespace ZitiUpdateService {
 				// Apply config           
 				LogManager.Configuration = config;
 			}
-			Logger.Info("============================== ziti-monitor started ==============================");
-			Logger.Info("logger initialized using file? {0}", byFile);
+			Logger.Info("========================= ziti-monitor started =========================");
+			Logger.Info("logger initialized");
+			Logger.Info("    - version   : {0}", asm.GetName().Version.ToString());
+			Logger.Info("    - using file: {0}", byFile);
+			Logger.Info("========================================================================");
 
 			UpdateService updateSvc = new UpdateService();
 			updateSvc.AutoLog = true;
 #if DEBUG
-			//bool nosvc = true;
-			bool nosvc = false;
+			bool nosvc = true;
+			//bool nosvc = false;
 
 			if (nosvc) {
 				updateSvc.Debug();

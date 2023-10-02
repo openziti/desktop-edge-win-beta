@@ -1,1 +1,1 @@
-"C:\Program Files (x86)\Caphyon\Advanced Installer 17.7\bin\x86\AdvancedInstaller.com" /register %1
+"C:\Program Files (x86)\Caphyon\Advanced Installer 20.9.1\bin\x86\AdvancedInstaller.com" /register %1
