@@ -50,7 +50,18 @@ jobs:
           name: ziti-tunnel-win.zip
           path: "service/ziti-tunnel-win.zip"
         env:
-          version: Get-Content .\version
+          version: Get-Content .\version      
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+      - run: ./ziti-edge-ui/npm install
+      - run: npm i -g electron-packager
+      - run: >
+          electron-packager ./ziti-edge-ui Ziti-Desktop-Edge
+            --overwrite --asar --electron-version=26.2.4 
+            --platform=win32 --arch=x64 --prune=true 
+            --out=./release-builds --icon=./ziti-edge-ui/app.ico
       - name: Restore nuget packages
         run: nuget restore ZitiDesktopEdge.sln
       - shell: pwsh
@@ -67,3 +78,38 @@ jobs:
           path: "Installer/Output/Ziti Desktop Edge Client-*.exe"
         env:
           version: Get-Content .\version
+  linux-build: 
+    name: Build the Ziti Desktop Edge for Linux Deb & Rpm Installer Package
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
+    steps: 
+      - uses: actions/checkout@v3
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.15.0'
+      - uses: pCYSl5EDgo/cat@1.0.1
+        id: vars
+        with:
+          path: ./version
+      - run: echo ${{ steps.vars.outputs.text }}
+        env:
+          APPVER: ${{ steps.vars.outputs.text }}
+      - name: Show Version
+        run: echo $APPVER
+      - run: npm install
+      - run: npm i -g electron-builder
+      - run: electron-builder --linux deb rpm
+      - name: Upload Linux Deb installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: ZitiDesktopEdge-Deb-${{ steps.vars.outputs.text }}
+          path: "dist/ziti-desktop-edge-${{ steps.vars.outputs.text }}.deb"
+      - name: Upload Linux Rpm installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: ZitiDesktopEdge-Rpm-${{ steps.vars.outputs.text }}
+          path: "dist/ziti-desktop-edge-${{ steps.vars.outputs.text }}.rpm"
+        
