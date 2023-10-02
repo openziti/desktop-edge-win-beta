@@ -1,10 +1,11 @@
 name: Build Installer
 
 on:
-  push:
+  pull_request:
     branches: 
-      - master
+      - main
       - 'release-*'
+      - 'beta-release-*'
 
 env:
   BUILD_CONFIG: "Release"
@@ -16,41 +17,52 @@ jobs:
     runs-on: windows-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     env:
-      SOME_KEY: ${{ secrets.SOME_KEY }}
+      SIGNING_CERT: ${{ secrets.SIGNING_CERT_2022_b64 }}
       ADV_INST_KEY: ${{ secrets.ADV_INST_KEY }}
       JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
       gh_ci_key: ${{ secrets.GH_CI_KEY }}
       ZITI_DEBUG: "yes_please"
-      
+      OPENZITI_P12_PASS: ${{ secrets.OPENZITI_P12_PASS }}
+      OPENZITI_P12: ${{ secrets.OPENZITI_P12 }}
+
     steps:
-      - uses: actions/checkout@master
-      - uses: microsoft/setup-msbuild@v1
-      - uses: actions/setup-go@v2
+      - name: Git Checkout
+        uses: actions/checkout@v2
         with:
-          go-version: '1.15.5'
+          persist-credentials: false
+      - uses: microsoft/setup-msbuild@v1
+      - name: Set up Go 
+        uses: actions/setup-go@v3
       - if: github.event_name == 'push'
         run: echo "GIT_BRANCH=$($env:GITHUB_REF.replace('refs/heads/', ''))" >> $env:GITHUB_ENV
       - if: github.event_name == 'pull_request'
         run: echo "GIT_BRANCH=$env:GITHUB_HEAD_REF" >> $env:GITHUB_ENV
-      - run: echo "$(go env GOPATH)\bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
       - name: Setup secrets
         run: |
-          echo "${env:SOME_KEY}" > WinSign.b64
+          echo "${env:SIGNING_CERT}" > WinSign.b64
           echo "${env:ADV_INST_KEY}" > ADV_INST_KEY.key
+          echo "${env:OPENZITI_P12}" > OPENZITI_P12.b64
           C:\Windows\System32\certutil.exe -decode WinSign.b64 Installer/WinSign.p12
+          C:\Windows\System32\certutil.exe -decode OPENZITI_P12.b64 Installer/openziti.p12
       - name: Trying to run choco install.
         run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-      - name: "Install Choco needs: advanced-installer wixtoolset zip ninja"
-        run: choco install advanced-installer wixtoolset zip ninja --yes
-      - name: Build the Service
-        run: service/publish.bat
+      - name: "Install Choco needs: advanced-installer wixtoolset ninja"
+        run: choco install advanced-installer wixtoolset ninja --yes
+      - name: Build the ziti-edge-tunnel (for now, will download later)
+        run: ziti-edge-tunnel\build.bat quick
+      - name: Setting up version env var
+        run: echo "VERSION=$(cat .\version)" >> $env:GITHUB_ENV
       - name: Upload service zip onto job
         uses: actions/upload-artifact@v2
         with:
-          name: ziti-tunnel-win.zip
-          path: "service/ziti-tunnel-win.zip"
-        env:
-          version: Get-Content .\version
+          name: ziti-edge-tunnel-win.zip-${{ env.VERSION }}
+          path: "ziti-edge-tunnel/ziti-edge-tunnel-win.zip"
+      - name: Setting up ZITI_EDGE_TUNNEL_BUILD env var
+        run: echo "ZITI_EDGE_TUNNEL_BUILD=.\ziti-edge-tunnel" >> $env:GITHUB_ENV
+      - uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.8.1'
       - name: Restore nuget packages
         run: nuget restore ZitiDesktopEdge.sln
       - shell: pwsh
@@ -58,12 +70,25 @@ jobs:
         run: |
           $key=(Get-Content .\ADV_INST_KEY.key)
           .\Installer\reg.bat $key
+      - if: github.ref == 'refs/heads/release-next'
+        name: Install ziti-ci
+        uses: netfoundry/ziti-ci@v1
+      - if: github.ref == 'refs/heads/release-next'
+        name: Configure ziti-ci
+        run: C:\Users\runneradmin\go\bin\ziti-ci configure-git
       - name: Build UI and Assemble Installer
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ziti_ci_gpg_key: ${{ secrets.ZITI_CI_GPG_KEY }}
+          ziti_ci_gpg_key_id: ${{ secrets.ZITI_CI_GPG_KEY_ID }}
         run: powershell -File .\Installer\build.ps1
       - name: Upload installer onto job
         uses: actions/upload-artifact@v2
         with:
-          name: ZitiDesktopEdgeClient
-          path: "Installer/Output/Ziti Desktop Edge Client-*.exe"
-        env:
-          version: Get-Content .\version
+          name: ZitiDesktopEdgeClient-${{ env.VERSION }}
+          path: "Installer/Output/Ziti Desktop Edge Client-*"
+      - name: Git Status
+        run: git status
+      - name: git diff
+        run: git diff DesktopEdge/Properties/AssemblyInfo.cs ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip
+
