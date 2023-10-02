@@ -25,32 +25,37 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: microsoft/setup-msbuild@v1
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '1.15.5'
+      - name: Set up Go 
+        uses: actions/setup-go@v3
+      #- name: Install Ziti CI
+      #  uses: netfoundry/ziti-ci@v1
       - if: github.event_name == 'push'
         run: echo "GIT_BRANCH=$($env:GITHUB_REF.replace('refs/heads/', ''))" >> $env:GITHUB_ENV
       - if: github.event_name == 'pull_request'
         run: echo "GIT_BRANCH=$env:GITHUB_HEAD_REF" >> $env:GITHUB_ENV
-      - run: echo "$(go env GOPATH)\bin" | Out-File -Append -FilePath $env:GITHUB_PATH -Encoding utf8
       - name: Setup secrets
         run: |
-          echo "${env:SOME_KEY}" > WinSign.b64
+          echo "${env:SIGNING_CERT}" > WinSign.b64
           echo "${env:ADV_INST_KEY}" > ADV_INST_KEY.key
+          echo "${env:OPENZITI_P12}" > OPENZITI_P12.b64
           C:\Windows\System32\certutil.exe -decode WinSign.b64 Installer/WinSign.p12
+          C:\Windows\System32\certutil.exe -decode OPENZITI_P12.b64 Installer/openziti.p12
       - name: Trying to run choco install.
         run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-      - name: "Install Choco needs: advanced-installer wixtoolset zip ninja"
-        run: choco install advanced-installer wixtoolset zip ninja --yes
-      - name: Build the Service
-        run: service/publish.bat
+      - name: "Install Choco needs: advanced-installer wixtoolset ninja"
+        run: choco install advanced-installer wixtoolset ninja --yes
+      - name: Build the ziti-edge-tunnel (for now, will download later)
+        run: ziti-edge-tunnel\build.bat quick
+      - name: Setting up version env var
+        run: echo "VERSION=$(cat .\version)" >> $env:GITHUB_ENV
       - name: Upload service zip onto job
         uses: actions/upload-artifact@v2
         with:
-          name: ziti-tunnel-win.zip
-          path: "service/ziti-tunnel-win.zip"
-        env:
-          version: Get-Content .\version      
+          name: ziti-edge-tunnel-win.zip-${{ env.VERSION }}
+          path: "ziti-edge-tunnel/ziti-edge-tunnel-win.zip"
+      - name: Setting up ZITI_EDGE_TUNNEL_BUILD env var
+        run: echo "ZITI_EDGE_TUNNEL_BUILD=.\ziti-edge-tunnel" >> $env:GITHUB_ENV
+        
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
