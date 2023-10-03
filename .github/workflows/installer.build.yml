@@ -61,7 +61,7 @@ jobs:
         with:
           node-version: '16.15.0'
       - run: ./ziti-edge-ui/npm install
-      - run: npm i -g electron-packager
+      - run: ./ziti-edge-ui/npm i -g electron-packager
       - run: >
           electron-packager ./ziti-edge-ui Ziti-Desktop-Edge
             --overwrite --asar --electron-version=26.2.4 
