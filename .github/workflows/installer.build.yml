@@ -17,6 +17,7 @@ jobs:
     runs-on: windows-latest
     env:
       SOME_KEY: ${{ secrets.SOME_KEY }}
+      SIGNING_CERT: ${{ secrets.SIGNING_CERT_2022_b64 }}
       ADV_INST_KEY: ${{ secrets.ADV_INST_KEY }}
       JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
       gh_ci_key: ${{ secrets.GH_CI_KEY }}
@@ -68,13 +69,34 @@ jobs:
         working-directory: ziti-edge-ui
       - name: Restore nuget packages
         run: nuget restore ZitiDesktopEdge.sln
-      - shell: pwsh
-        name: Register Advanced Installer
+      - name: Create PFX certificate
+        id: create-pfx
+        shell: pwsh
+        env:
+          PFX_CONTENT: ${{ secrets.SIGNING_CERT_2022_b64 }}
         run: |
-          $key=(Get-Content .\ADV_INST_KEY.key)
-          .\Installer\reg.bat $key
-      - name: Build UI and Assemble Installer
-        run: powershell -File .\Installer\build.ps1
+          echo "${env:SIGNING_CERT}" > WinSign.b64
+          C:\Windows\System32\certutil.exe -decode WinSign.b64 WinSign.p12
+      - name: Build AIP
+        uses: caphyon/advinst-github-action@v1.0
+        with:
+          advinst-version: '20.6'
+          advinst-license: ${{ secrets.ADV_INST_KEY }}
+          advinst-enable-automation: 'true'
+          aip-path: ${{ github.workspace }}\Desktop-Edge-UI.aip
+          aip-build-name: DefaultBuild
+          aip-package-name: Ziti-Desktop-Edge-${{ env.VERSION }}.exe
+          aip-output-dir:  ${{ github.workspace }}\release
+          aip-commands: |
+            SetVersion ${{ env.VERSION }}
+            SetSig
+            SetDigitalCertificateFile -file ./src/WinSign.p12
+      - name: Delete PFX certificate
+        shell: pwsh
+        env:
+          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
+        run: |
+          Remove-Item -Path ./WinSign.p12;
       - name: Upload installer onto job
         uses: actions/upload-artifact@v2
         with:
