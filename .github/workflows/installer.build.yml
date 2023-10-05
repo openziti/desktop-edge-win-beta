@@ -83,14 +83,14 @@ jobs:
           advinst-version: '20.6'
           advinst-license: ${{ secrets.ADV_INST_KEY }}
           advinst-enable-automation: 'true'
-          aip-path: ${{ github.workspace }}\Desktop-Edge-UI.aip
+          aip-path: ${{ github.workspace }}\Imstaller\ZitiDesktopEdge.aip
           aip-build-name: DefaultBuild
           aip-package-name: Ziti-Desktop-Edge-${{ env.VERSION }}.exe
           aip-output-dir:  ${{ github.workspace }}\release
           aip-commands: |
             SetVersion ${{ env.VERSION }}
             SetSig
-            SetDigitalCertificateFile -file ./src/WinSign.p12
+            SetDigitalCertificateFile -file ./WinSign.p12
       - name: Delete PFX certificate
         shell: pwsh
         env:
