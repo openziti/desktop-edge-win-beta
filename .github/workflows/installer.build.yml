@@ -62,13 +62,13 @@ jobs:
         with:
           node-version: '16.15.0'
       - run: npm install
-        working-directory: ziti-edge-ui
+        working-directory: ./ziti-edge-ui
       - run: npm i -g electron-packager
-        working-directory: ziti-edge-ui
+        working-directory: ./ziti-edge-ui
       - run: electron-packager ./ Ziti-Desktop-Edge --overwrite --asar --electron-version=26.2.4 --platform=win32 --arch=x64 --prune=true  --out=../release-builds --icon=./app.ico
         working-directory: ziti-edge-ui
       - name: Restore nuget packages
-        working-directory: /
+        working-directory: ./
         run: nuget restore ZitiDesktopEdge.sln
       - name: Create PFX certificate
         id: create-pfx
