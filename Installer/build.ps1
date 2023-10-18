@@ -12,6 +12,11 @@ $invocation = (Get-Variable MyInvocation).Value
 $scriptPath = Split-Path $invocation.MyCommand.Path
 $buildPath = "${scriptPath}\build"
 
+cd ./ziti-edge-ui
+npm install
+npm i -g electron-packager
+electron-packager ./ Ziti-Desktop-Edge --overwrite --asar --electron-version=26.2.4 --platform=win32 --arch=x64 --prune=true  --out=../release-builds --icon=./app.ico
+
 echo "Cleaning previous build folder if it exists"
 rm "${buildPath}" -r -fo -ErrorAction Ignore
 mkdir "${buildPath}" -ErrorAction Ignore > $null

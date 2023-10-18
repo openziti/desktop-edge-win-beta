@@ -3,9 +3,9 @@ name: Build Installer
 on:
   push:
     branches: 
-      - master
+      - main
       - 'release-*'
-      - 'new-ui-branch'
+      - 'beta-release-*'
 
 env:
   BUILD_CONFIG: "Release"
@@ -15,14 +15,16 @@ jobs:
   build:
     name: Build the Ziti Desktop Edge for Windows Installer Package
     runs-on: windows-latest
+    # if: "!contains(github.event.head_commit.message, 'ci skip')"
     env:
-      SOME_KEY: ${{ secrets.SOME_KEY }}
       SIGNING_CERT: ${{ secrets.SIGNING_CERT_2022_b64 }}
       ADV_INST_KEY: ${{ secrets.ADV_INST_KEY }}
       JFROG_ACCESS_TOKEN: ${{ secrets.JFROG_ACCESS_TOKEN }}
       gh_ci_key: ${{ secrets.GH_CI_KEY }}
       ZITI_DEBUG: "yes_please"
-      
+      OPENZITI_P12_PASS: ${{ secrets.OPENZITI_P12_PASS }}
+      OPENZITI_P12: ${{ secrets.OPENZITI_P12 }}
+
     steps:
       - uses: actions/checkout@master
       - uses: microsoft/setup-msbuild@v1
@@ -45,6 +47,8 @@ jobs:
         run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
       - name: "Install Choco needs: advanced-installer wixtoolset ninja"
         run: choco install advanced-installer wixtoolset ninja --yes
+      - name: "Install Choco needs: Node JS"
+        run: choco install -y --force nodejs
       - name: Build the ziti-edge-tunnel (for now, will download later)
         run: ziti-edge-tunnel\build.bat quick
       - name: Setting up version env var
@@ -56,55 +60,38 @@ jobs:
           path: "ziti-edge-tunnel/ziti-edge-tunnel-win.zip"
       - name: Setting up ZITI_EDGE_TUNNEL_BUILD env var
         run: echo "ZITI_EDGE_TUNNEL_BUILD=.\ziti-edge-tunnel" >> $env:GITHUB_ENV
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
+      - uses: nuget/setup-nuget@v1
         with:
-          node-version: '16.15.0'
-      - run: npm install
-        working-directory: ./ziti-edge-ui
-      - run: npm i -g electron-packager
-        working-directory: ./ziti-edge-ui
-      - run: electron-packager ./ Ziti-Desktop-Edge --overwrite --asar --electron-version=26.2.4 --platform=win32 --arch=x64 --prune=true  --out=../release-builds --icon=./app.ico
-        working-directory: ziti-edge-ui
+          nuget-api-key: ${{ secrets.NuGetAPIKey }}
+          nuget-version: '5.8.1'
       - name: Restore nuget packages
-        working-directory: ./
         run: nuget restore ZitiDesktopEdge.sln
-      - name: Create PFX certificate
-        id: create-pfx
-        shell: pwsh
-        env:
-          PFX_CONTENT: ${{ secrets.SIGNING_CERT_2022_b64 }}
+      - shell: pwsh
+        name: Register Advanced Installer
         run: |
-          echo "${env:SIGNING_CERT}" > WinSign.b64
-          C:\Windows\System32\certutil.exe -decode WinSign.b64 WinSign.p12
-      - name: Build AIP
-        uses: caphyon/advinst-github-action@v1.0
-        with:
-          advinst-version: '21.0.1'
-          advinst-license: ${{ secrets.ADV_INST_KEY }}
-          advinst-enable-automation: 'true'
-          aip-path: ${{ github.workspace }}\Installer\ZitiDesktopEdge.aip
-          aip-build-name: DefaultBuild
-          aip-package-name: Ziti-Desktop-Edge-${{ env.VERSION }}.exe
-          aip-output-dir:  ${{ github.workspace }}\release
-          aip-commands: |
-            SetVersion ${{ env.VERSION }}
-            SetSig
-            SetDigitalCertificateFile -file ./WinSign.p12
-      - name: Delete PFX certificate
-        shell: pwsh
+          $key=(Get-Content .\ADV_INST_KEY.key)
+          .\Installer\reg.bat $key
+      - name: Build UI and Assemble Installer
         env:
-          PFX_PATH: ${{ steps.create-pfx.outputs.PFX_PATH }}
-        run: |
-          Remove-Item -Path ./WinSign.p12;
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ziti_ci_gpg_key: ${{ secrets.ZITI_CI_GPG_KEY }}
+          ziti_ci_gpg_key_id: ${{ secrets.ZITI_CI_GPG_KEY_ID }}
+        run: powershell -File .\Installer\build.ps1
       - name: Upload installer onto job
         uses: actions/upload-artifact@v2
         with:
-          name: ZitiDesktopEdgeClient
-          path: "Installer/Output/Ziti Desktop Edge Client-*.exe"
-        env:
-          version: Get-Content .\version
+          name: ZitiDesktopEdgeClient-${{ env.VERSION }}
+          path: "Installer/Output/Ziti Desktop Edge Client-*"
+      - name: Git Status
+        run: git status
+      - name: git diff
+        run: git diff DesktopEdge/Properties/AssemblyInfo.cs ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip
+      - if: github.ref == 'refs/heads/release-next'
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'DesktopEdge/Properties/AssemblyInfo.cs ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip'
+          default_author: github_actions
+          committer_name: ziti-ci
   linux-build: 
     name: Build the Ziti Desktop Edge for Linux Deb & Rpm Installer Package
     runs-on: ubuntu-latest
@@ -139,4 +126,3 @@ jobs:
         with:
           name: ZitiDesktopEdge-Rpm-${{ steps.vars.outputs.text }}
           path: "dist/ziti-desktop-edge-${{ steps.vars.outputs.text }}.rpm"
-        

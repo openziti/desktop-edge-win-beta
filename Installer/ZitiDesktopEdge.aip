@@ -22,7 +22,7 @@
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="NetFoundry Inc"/>
     <ROW Property="MsiLogging" MultiBuildValue="AnyCPU_Release:vp"/>
-    <ROW Property="ProductCode" Value="1033:{73687172-D51B-4EB9-93F8-74D9381BD181} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{CCDC541A-93B6-4309-A5C7-E50564FC75D3} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Ziti Desktop Edge"/>
     <ROW Property="ProductVersion" Value="2.1.17" Options="32"/>
@@ -67,7 +67,6 @@
     <ROW Component="libEGL.dll" ComponentId="{99E22709-0615-4C99-921C-8DB6A4E38992}" Directory_="APPDIR" Attributes="256" KeyPath="libEGL.dll"/>
     <ROW Component="libGLESv2.dll" ComponentId="{6E800AC3-8596-4DBC-B71D-A8327A292533}" Directory_="APPDIR" Attributes="256" KeyPath="libGLESv2.dll"/>
     <ROW Component="vk_swiftshader.dll" ComponentId="{5235CFB2-9A06-499F-8533-3EAEDA85263E}" Directory_="APPDIR" Attributes="256" KeyPath="vk_swiftshader.dll"/>
-    <ROW Component="vulkan1.dll" ComponentId="{1C9016B7-B676-4F2E-A219-B6A5D3D725E5}" Directory_="APPDIR" Attributes="256" KeyPath="vulkan1.dll"/>
     <ROW Component="wintun.dll" ComponentId="{9A0B9D43-D06F-4456-BBCF-C99A90D19D8C}" Directory_="APPDIR" Attributes="256" KeyPath="wintun.dll"/>
     <ROW Component="zitiedgetunnel.exe" ComponentId="{53505232-48E9-44C1-B2FB-77472C1C4732}" Directory_="APPDIR" Attributes="256" KeyPath="zitiedgetunnel.exe"/>
   </COMPONENT>
@@ -93,15 +92,9 @@
     <ROW File="icudtl.dat" Component_="App.config" FileName="icudtl.dat" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\icudtl.dat" SelfReg="false"/>
     <ROW File="libEGL.dll" Component_="libEGL.dll" FileName="libEGL.dll" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\libEGL.dll" SelfReg="false"/>
     <ROW File="libGLESv2.dll" Component_="libGLESv2.dll" FileName="LIBGLE~1.DLL|libGLESv2.dll" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\libGLESv2.dll" SelfReg="false"/>
-    <ROW File="LICENSE" Component_="App.config" FileName="LICENSE" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\LICENSE" SelfReg="false"/>
-    <ROW File="LICENSES.chromium.html" Component_="App.config" FileName="LICENS~1.HTM|LICENSES.chromium.html" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\LICENSES.chromium.html" SelfReg="false"/>
     <ROW File="resources.pak" Component_="App.config" FileName="RESOUR~1.PAK|resources.pak" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\resources.pak" SelfReg="false"/>
-    <ROW File="snapshot_blob.bin" Component_="App.config" FileName="SNAPSH~1.BIN|snapshot_blob.bin" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\snapshot_blob.bin" SelfReg="false"/>
     <ROW File="v8_context_snapshot.bin" Component_="App.config" FileName="V8_CON~1.BIN|v8_context_snapshot.bin" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\v8_context_snapshot.bin" SelfReg="false"/>
-    <ROW File="version" Component_="App.config" FileName="version" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\version" SelfReg="false"/>
     <ROW File="vk_swiftshader.dll" Component_="vk_swiftshader.dll" FileName="VK_SWI~1.DLL|vk_swiftshader.dll" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\vk_swiftshader.dll" SelfReg="false"/>
-    <ROW File="vk_swiftshader_icd.json" Component_="App.config" FileName="VK_SWI~1.JSO|vk_swiftshader_icd.json" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\vk_swiftshader_icd.json" SelfReg="false"/>
-    <ROW File="vulkan1.dll" Component_="vulkan1.dll" FileName="vulkan-1.dll" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\vulkan-1.dll" SelfReg="false"/>
     <ROW File="ZitiDesktopEdge.exe" Component_="ZitiDesktopEdge.exe" FileName="ZITI-D~1.EXE|Ziti-Desktop-Edge.exe" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\Ziti-Desktop-Edge.exe" SelfReg="false" DigSign="true"/>
     <ROW File="af.pak" Component_="af.pak" FileName="af.pak" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\locales\af.pak" SelfReg="false"/>
     <ROW File="am.pak" Component_="af.pak" FileName="am.pak" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\locales\am.pak" SelfReg="false"/>
@@ -347,7 +340,6 @@
     <ROW Feature_="MainFeature" Component_="libEGL.dll"/>
     <ROW Feature_="MainFeature" Component_="libGLESv2.dll"/>
     <ROW Feature_="MainFeature" Component_="vk_swiftshader.dll"/>
-    <ROW Feature_="MainFeature" Component_="vulkan1.dll"/>
     <ROW Feature_="MainFeature" Component_="ZitiDesktopEdge.exe"/>
     <ROW Feature_="MainFeature" Component_="af.pak"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
