@@ -86,11 +86,11 @@ jobs:
       - name: Git Status
         run: git status
       - name: git diff
-        run: git diff DesktopEdge/Properties/AssemblyInfo.cs ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip
+        run: git diff ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip
       - if: github.ref == 'refs/heads/release-next'
         uses: EndBug/add-and-commit@v9
         with:
-          add: 'DesktopEdge/Properties/AssemblyInfo.cs ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip'
+          add: 'ZitiDesktopEdge.Client/Properties/AssemblyInfo.cs ZitiUpdateService/Properties/AssemblyInfo.cs Installer/ZitiDesktopEdge.aip'
           default_author: github_actions
           committer_name: ziti-ci
   linux-build: 
