@@ -6,6 +6,7 @@ on:
       - main
       - 'release-*'
       - 'beta-release-*'
+      - 'new-ui-branch'
 
 env:
   BUILD_CONFIG: "Release"
