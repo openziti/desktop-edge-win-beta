@@ -124,10 +124,20 @@ var app = {
         } );
     },
     releaseStream: (e) => {
-        alert($(e.currentTarget).data("id"));
+        app.sendMonitorMessage({
+            Op: "SetReleaseStream",
+            Action: $(e.currentTarget).data("id")
+        });
+        growler.success("Release Stream Set");
     },
     setUpdateUrl: (e) => {
-        alert($("#EditReleaseUrl").val());
+        app.sendMonitorMessage({
+            Op: "SetAutomaticUpgradeURL",
+            Action: $("#EditReleaseUrl").val()
+        });
+        growler.success("Url Set to "+$("#EditReleaseUrl").val());
+        $("#EditReleaseUrl").val("");
+        app.hideUrlForm();
     },
     growl: function(e, data) {
         growler.error(data);
