@@ -269,3 +269,11 @@ Installer/build/
 Installer/ziti-tunnel-service.zip
 ziti-tunnel-service.zip
 release-builds/
+ziti-edge-tunnel/wintun.dll
+Installer/wintun.zip
+Installer/zet.zip
+ziti-edge-tunnel/ziti-edge-tunnel-win.zip
+ziti-edge-tunnel/ziti-edge-tunnel-Windows_x86_64.zip
+ziti-edge-tunnel/ziti-edge-tunnel-Windows_x86_64/wintun.dll
+ziti-edge-tunnel/ziti-edge-tunnel-Windows_x86_64/ziti-edge-tunnel.exe
+ziti-edge-tunnel/ziti-edge-tunnel.exe
