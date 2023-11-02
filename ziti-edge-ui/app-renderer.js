@@ -54,12 +54,9 @@ var app = {
         $(".fullNav").click(app.sub);
         $(".supportNav").click(app.support);
         $("#EditButton").click(app.showForm);
-        $("#EditUrlButton").click(app.showUrlForm);
         $("#CloseForm").click(app.hideForm);
-        $("#CloseUrlForm").click(app.hideUrlForm);
         $(".levelSelect").click(app.levelSelect);
         $(".releaseStream").click(app.releaseStream);
-        $("#SaveUrlButton").click(app.setUpdateUrl);
         $(".toggle").click(app.toggle);
         $('[data-url]').click(app.open);
         $(".search").keyup(app.search);
@@ -122,22 +119,6 @@ var app = {
                 $("#ReleaseStream").show();
             }
         } );
-    },
-    releaseStream: (e) => {
-        app.sendMonitorMessage({
-            Op: "SetReleaseStream",
-            Action: $(e.currentTarget).data("id")
-        });
-        growler.success("Release Stream Set");
-    },
-    setUpdateUrl: (e) => {
-        app.sendMonitorMessage({
-            Op: "SetAutomaticUpgradeURL",
-            Action: $("#EditReleaseUrl").val()
-        });
-        growler.success("Url Set to "+$("#EditReleaseUrl").val());
-        $("#EditReleaseUrl").val("");
-        app.hideUrlForm();
     },
     growl: function(e, data) {
         growler.error(data);
@@ -273,14 +254,8 @@ var app = {
     close: function(e) {
         ipcRenderer.send('close');
     },
-    showUrlForm: function(e) {
-        $("#EditUrlForm").addClass("open");
-    },
     showForm: function(e) {
         $("#EditForm").addClass("open");
-    },
-    hideUrlForm: function(e) {
-        $("#EditUrlForm").removeClass("open");
     },
     hideForm: function(e) {
         $("#EditForm").removeClass("open");
