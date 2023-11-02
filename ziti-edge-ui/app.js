@@ -283,6 +283,10 @@ var Application = {
     }
 }
 
+process.on('uncaughtException', function (error) {
+    Log.error("Uncaught Exception", JSON.stringify(error));
+});
+
 const appLock = app.requestSingleInstanceLock();
 
 electron.app.setLoginItemSettings({

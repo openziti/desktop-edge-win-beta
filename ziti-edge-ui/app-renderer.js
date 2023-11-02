@@ -65,6 +65,9 @@ var app = {
 		$("input").on("keyup", app.enter);
 		$("select").on("keyup", app.enter);
         $("#SaveConfigButton").click(app.save);
+        $("#SaveUrlButton").click(app.setUpdateUrl);
+        $("#CloseUrlForm").click(app.hideUrlForm);
+        $("#EditUrlButton").click(app.showUrlForm);
         $(".sort").click((e) => {
             var options = $(e.currentTarget).find(".options");
             if (options) {
@@ -119,6 +122,28 @@ var app = {
                 $("#ReleaseStream").show();
             }
         } );
+    },
+    releaseStream: (e) => {
+        app.sendMonitorMessage({
+            Op: "SetReleaseStream",
+            Action: $(e.currentTarget).data("id")
+        });
+        growler.success("Release Stream Set");
+    },
+    setUpdateUrl: (e) => {
+        app.sendMonitorMessage({
+            Op: "SetAutomaticUpgradeURL",
+            Action: $("#EditReleaseUrl").val()
+        });
+        growler.success("Url Set to "+$("#EditReleaseUrl").val());
+        $("#EditReleaseUrl").val("");
+        app.hideUrlForm();
+    },    
+    showUrlForm: function(e) {
+        $("#EditUrlForm").addClass("open");
+    },
+    hideUrlForm: function(e) {
+        $("#EditUrlForm").removeClass("open");
     },
     growl: function(e, data) {
         growler.error(data);
