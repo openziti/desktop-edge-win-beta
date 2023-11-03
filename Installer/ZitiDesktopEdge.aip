@@ -22,10 +22,10 @@
     <ROW Property="CTRLS" Value="2"/>
     <ROW Property="Manufacturer" Value="NetFoundry Inc"/>
     <ROW Property="MsiLogging" MultiBuildValue="AnyCPU_Release:vp"/>
-    <ROW Property="ProductCode" Value="1033:{CCDC541A-93B6-4309-A5C7-E50564FC75D3} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{AAB242DC-1139-4D4B-A301-D1A4C6AA6001} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="Ziti Desktop Edge"/>
-    <ROW Property="ProductVersion" Value="2.1.17" Options="32"/>
+    <ROW Property="ProductVersion" Value="3.0.0" Options="32"/>
     <ROW Property="REBOOT" MultiBuildValue="AnyCPU_Release:Suppress"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND;AI_SETUPEXEPATH;SETUPEXEDIR"/>
     <ROW Property="UpgradeCode" Value="{CB7E173A-663D-4A23-BB22-D1E8D885C2F3}"/>
@@ -54,12 +54,24 @@
     <ROW Component="App.config" ComponentId="{27FAD46C-8379-4680-8506-4BCBA5A012E8}" Directory_="APPDIR" Attributes="0" KeyPath="ziti.ico" Type="0"/>
     <ROW Component="C4FE6FD5B7C4D07B3A313E754A9A6A8" ComponentId="{8BC224C1-4D19-4CC0-AC35-5C6D4ADD4E61}" Directory_="APPDIR" Attributes="260" KeyPath="C4FE6FD5B7C4D07B3A313E754A9A6A8" Options="2"/>
     <ROW Component="DnsClient.dll" ComponentId="{8C789D0B-0EB7-4172-ADB8-11D52C22488C}" Directory_="APPDIR" Attributes="0" KeyPath="DnsClient.dll"/>
+    <ROW Component="Microsoft.Management.Infrastructure.dll" ComponentId="{83C60C14-F6FF-46E3-B161-72D312D756ED}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Management.Infrastructure.dll"/>
+    <ROW Component="Microsoft.Win32.Registry.dll" ComponentId="{24FDECFE-851E-4EFA-84E1-74D21F80313D}" Directory_="APPDIR" Attributes="0" KeyPath="Microsoft.Win32.Registry.dll"/>
     <ROW Component="NLog.dll" ComponentId="{384D38B5-A4A0-4BC6-886A-82153E2687ED}" Directory_="APPDIR" Attributes="0" KeyPath="NLog.dll"/>
+    <ROW Component="Newtonsoft.Json.dll" ComponentId="{665B0708-EF44-4BDC-9D1E-53B638C6EC13}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
     <ROW Component="ProductInformation" ComponentId="{4FC3A7CB-D334-466A-A919-E6A237EF4443}" Directory_="APPDIR" Attributes="260" KeyPath="Version"/>
     <ROW Component="SHORTCUTDIR" ComponentId="{60686321-4C57-4A78-86C5-7ADE53E891D8}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="System.Buffers.dll" ComponentId="{337A28A5-0EA0-420C-8CC3-84FBC3EF7BE2}" Directory_="APPDIR" Attributes="0" KeyPath="System.Buffers.dll"/>
+    <ROW Component="System.Management.Automation.dll" ComponentId="{233ABC15-E87E-44DC-A8AA-AC917F32750D}" Directory_="APPDIR" Attributes="0" KeyPath="System.Management.Automation.dll"/>
+    <ROW Component="System.Memory.dll" ComponentId="{9926596D-A6B5-40D7-91E7-48089B9BCF60}" Directory_="APPDIR" Attributes="0" KeyPath="System.Memory.dll"/>
+    <ROW Component="System.Numerics.Vectors.dll" ComponentId="{A4CECE1F-00A6-4700-9DFC-444F85E29D6C}" Directory_="APPDIR" Attributes="0" KeyPath="System.Numerics.Vectors.dll"/>
+    <ROW Component="System.Runtime.CompilerServices.Unsafe.dll" ComponentId="{61890600-0F11-4B58-929C-D3D5D20B6F9F}" Directory_="APPDIR" Attributes="0" KeyPath="System.Runtime.CompilerServices.Unsafe.dll"/>
+    <ROW Component="System.Security.AccessControl.dll" ComponentId="{B4C3D64E-B134-4653-BF22-669A494946B4}" Directory_="APPDIR" Attributes="0" KeyPath="System.Security.AccessControl.dll"/>
+    <ROW Component="System.Security.Cryptography.Pkcs.dll" ComponentId="{1A84FE20-07F2-4977-B500-CB8EA8DB070E}" Directory_="APPDIR" Attributes="0" KeyPath="System.Security.Cryptography.Pkcs.dll"/>
+    <ROW Component="System.Security.Principal.Windows.dll" ComponentId="{FE4765D6-7F98-46C5-A7BB-AFF19029E688}" Directory_="APPDIR" Attributes="0" KeyPath="System.Security.Principal.Windows.dll"/>
+    <ROW Component="System.ValueTuple.dll" ComponentId="{9CADA6E1-823C-4658-93BF-B7BC848780C0}" Directory_="APPDIR" Attributes="0" KeyPath="System.ValueTuple.dll"/>
     <ROW Component="ZitiDesktopEdge.Client.dll" ComponentId="{7834CBFB-BA9A-4337-9603-507C71135B01}" Directory_="APPDIR" Attributes="0" KeyPath="ZitiDesktopEdge.Client.dll"/>
     <ROW Component="ZitiDesktopEdge.exe" ComponentId="{5B216F6F-BAA8-493F-AEC8-A6C72CDCA78D}" Directory_="APPDIR" Attributes="256" KeyPath="ZitiDesktopEdge.exe"/>
+    <ROW Component="ZitiUpdateService.exe" ComponentId="{FEF166FA-E267-4D4B-BA87-9C130A139A25}" Directory_="APPDIR" Attributes="256" KeyPath="ZitiUpdateService.exe"/>
     <ROW Component="af.pak" ComponentId="{7B6A55DD-1AE7-46DA-A79F-1ADF9FD33021}" Directory_="locales_Dir" Attributes="0" KeyPath="af.pak" Type="0"/>
     <ROW Component="app.asar" ComponentId="{193B9D11-8172-4B70-B153-F2F5DDAAF2E7}" Directory_="resources_Dir" Attributes="0" KeyPath="app.asar" Type="0"/>
     <ROW Component="d3dcompiler_47.dll" ComponentId="{B7AAFB29-7BDC-4087-847A-727DF4BAFB70}" Directory_="APPDIR" Attributes="256" KeyPath="d3dcompiler_47.dll"/>
@@ -78,7 +90,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
     <ROW File="ziti.ico" Component_="App.config" FileName="ziti.ico" Attributes="0" SourcePath="ziti.ico" SelfReg="false"/>
-    <ROW File="ZitiDesktopEdge.Client.dll" Component_="ZitiDesktopEdge.Client.dll" FileName="ZITIDE~1.DLL|ZitiDesktopEdge.Client.dll" Attributes="0" SourcePath="..\ZitiDesktopEdge.Client\bin\Release\ZitiDesktopEdge.Client.dll" SelfReg="false"/>
+    <ROW File="ZitiDesktopEdge.Client.dll" Component_="ZitiDesktopEdge.Client.dll" FileName="ZITIDE~1.DLL|ZitiDesktopEdge.Client.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiDesktopEdge.Client.dll" SelfReg="false"/>
     <ROW File="NLog.dll" Component_="NLog.dll" FileName="NLog.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\NLog.dll" SelfReg="false"/>
     <ROW File="ZitiUpdateServicelog.config" Component_="App.config" FileName="ZITIUP~2.CON|ZitiUpdateService-log.config" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiUpdateService-log.config" SelfReg="false"/>
     <ROW File="wintun.dll" Component_="wintun.dll" FileName="wintun.dll" Attributes="0" SourcePath="build\service\wintun.dll" SelfReg="false"/>
@@ -152,6 +164,35 @@
     <ROW File="zhCN.pak" Component_="af.pak" FileName="zh-CN.pak" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\locales\zh-CN.pak" SelfReg="false"/>
     <ROW File="zhTW.pak" Component_="af.pak" FileName="zh-TW.pak" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\locales\zh-TW.pak" SelfReg="false"/>
     <ROW File="app.asar" Component_="app.asar" FileName="APP~1.ASA|app.asar" Attributes="0" SourcePath="..\release-builds\Ziti-Desktop-Edge-win32-x64\resources\app.asar" SelfReg="false"/>
+    <ROW File="App.config" Component_="App.config" FileName="APP~1.CON|App.config" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\App.config" SelfReg="false"/>
+    <ROW File="DnsClient.xml" Component_="App.config" FileName="DNSCLI~1.XML|DnsClient.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\DnsClient.xml" SelfReg="false"/>
+    <ROW File="Microsoft.Management.Infrastructure.dll" Component_="Microsoft.Management.Infrastructure.dll" FileName="MICROS~1.DLL|Microsoft.Management.Infrastructure.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\Microsoft.Management.Infrastructure.dll" SelfReg="false"/>
+    <ROW File="Microsoft.Win32.Registry.dll" Component_="Microsoft.Win32.Registry.dll" FileName="MICROS~2.DLL|Microsoft.Win32.Registry.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\Microsoft.Win32.Registry.dll" SelfReg="false"/>
+    <ROW File="Microsoft.Win32.Registry.xml" Component_="App.config" FileName="MICROS~1.XML|Microsoft.Win32.Registry.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\Microsoft.Win32.Registry.xml" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\Newtonsoft.Json.dll" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.xml" Component_="App.config" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\Newtonsoft.Json.xml" SelfReg="false"/>
+    <ROW File="NLog.xml" Component_="App.config" FileName="NLog.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\NLog.xml" SelfReg="false"/>
+    <ROW File="System.Buffers.xml" Component_="App.config" FileName="SYSTEM~1.XML|System.Buffers.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Buffers.xml" SelfReg="false"/>
+    <ROW File="System.Management.Automation.dll" Component_="System.Management.Automation.dll" FileName="SYSTEM~2.DLL|System.Management.Automation.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Management.Automation.dll" SelfReg="false"/>
+    <ROW File="System.Management.Automation.xml" Component_="App.config" FileName="SYSTEM~2.XML|System.Management.Automation.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Management.Automation.xml" SelfReg="false"/>
+    <ROW File="System.Memory.dll" Component_="System.Memory.dll" FileName="SYSTEM~3.DLL|System.Memory.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Memory.dll" SelfReg="false"/>
+    <ROW File="System.Memory.xml" Component_="App.config" FileName="SYSTEM~3.XML|System.Memory.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Memory.xml" SelfReg="false"/>
+    <ROW File="System.Numerics.Vectors.dll" Component_="System.Numerics.Vectors.dll" FileName="SYSTEM~4.DLL|System.Numerics.Vectors.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Numerics.Vectors.dll" SelfReg="false"/>
+    <ROW File="System.Numerics.Vectors.xml" Component_="App.config" FileName="SYSTEM~4.XML|System.Numerics.Vectors.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Numerics.Vectors.xml" SelfReg="false"/>
+    <ROW File="System.Runtime.CompilerServices.Unsafe.dll" Component_="System.Runtime.CompilerServices.Unsafe.dll" FileName="SYSTEM~5.DLL|System.Runtime.CompilerServices.Unsafe.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Runtime.CompilerServices.Unsafe.dll" SelfReg="false"/>
+    <ROW File="System.Runtime.CompilerServices.Unsafe.xml" Component_="App.config" FileName="SYSTEM~5.XML|System.Runtime.CompilerServices.Unsafe.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Runtime.CompilerServices.Unsafe.xml" SelfReg="false"/>
+    <ROW File="System.Security.AccessControl.dll" Component_="System.Security.AccessControl.dll" FileName="SYSTEM~6.DLL|System.Security.AccessControl.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.AccessControl.dll" SelfReg="false"/>
+    <ROW File="System.Security.AccessControl.xml" Component_="App.config" FileName="SYSTEM~6.XML|System.Security.AccessControl.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.AccessControl.xml" SelfReg="false"/>
+    <ROW File="System.Security.Cryptography.Pkcs.dll" Component_="System.Security.Cryptography.Pkcs.dll" FileName="SYSTEM~7.DLL|System.Security.Cryptography.Pkcs.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.Cryptography.Pkcs.dll" SelfReg="false"/>
+    <ROW File="System.Security.Cryptography.Pkcs.xml" Component_="App.config" FileName="SYSTEM~7.XML|System.Security.Cryptography.Pkcs.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.Cryptography.Pkcs.xml" SelfReg="false"/>
+    <ROW File="System.Security.Principal.Windows.dll" Component_="System.Security.Principal.Windows.dll" FileName="SYSTEM~8.DLL|System.Security.Principal.Windows.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.Principal.Windows.dll" SelfReg="false"/>
+    <ROW File="System.Security.Principal.Windows.xml" Component_="App.config" FileName="SYSTEM~8.XML|System.Security.Principal.Windows.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.Security.Principal.Windows.xml" SelfReg="false"/>
+    <ROW File="System.ValueTuple.dll" Component_="System.ValueTuple.dll" FileName="SYSTEM~9.DLL|System.ValueTuple.dll" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.ValueTuple.dll" SelfReg="false"/>
+    <ROW File="System.ValueTuple.xml" Component_="App.config" FileName="SYSTEM~9.XML|System.ValueTuple.xml" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\System.ValueTuple.xml" SelfReg="false"/>
+    <ROW File="ZitiDesktopEdge.Client.pdb" Component_="ZitiDesktopEdge.Client.dll" FileName="ZITIDE~1.PDB|ZitiDesktopEdge.Client.pdb" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiDesktopEdge.Client.pdb" SelfReg="false"/>
+    <ROW File="ZitiUpdateService.exe" Component_="ZitiUpdateService.exe" FileName="ZITIUP~1.EXE|ZitiUpdateService.exe" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiUpdateService.exe" SelfReg="false" DigSign="true"/>
+    <ROW File="ZitiUpdateService.exe.config" Component_="App.config" FileName="ZITIUP~1.CON|ZitiUpdateService.exe.config" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiUpdateService.exe.config" SelfReg="false"/>
+    <ROW File="ZitiUpdateService.pdb" Component_="ZitiUpdateService.exe" FileName="ZITIUP~1.PDB|ZitiUpdateService.pdb" Attributes="0" SourcePath="..\ZitiUpdateService\bin\Release\ZitiUpdateService.pdb" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AiPersistentDataComponent">
     <ROW PersistentRow="ZitiUpdateServicelog.config" Type="0" Condition="OLDPRODUCTS"/>
@@ -344,6 +385,18 @@
     <ROW Feature_="MainFeature" Component_="af.pak"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
     <ROW Feature_="MainFeature" Component_="app.asar"/>
+    <ROW Feature_="MainFeature" Component_="Microsoft.Management.Infrastructure.dll"/>
+    <ROW Feature_="MainFeature" Component_="Microsoft.Win32.Registry.dll"/>
+    <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Management.Automation.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Memory.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Numerics.Vectors.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Runtime.CompilerServices.Unsafe.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Security.AccessControl.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Security.Cryptography.Pkcs.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Security.Principal.Windows.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.ValueTuple.dll"/>
+    <ROW Feature_="MainFeature" Component_="ZitiUpdateService.exe"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="ZitiDesktopEdge.exe" SourcePath="..\ziti-edge-ui\app.ico" Index="0"/>
