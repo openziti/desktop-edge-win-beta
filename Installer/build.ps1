@@ -70,11 +70,11 @@ echo "Updating the version for UI and Installer"
 .\update-versions.ps1
 
 echo "Building the UI"
-msbuild ZitiDesktopEdge.sln /property:Configuration=Release
+msbuild ZitiDesktopEdge.sln /property:a=Release
 
 Pop-Location
 
-$ADV_INST_HOME = "C:\Program Files (x86)\Caphyon\Advanced Installer 21.1"
+$ADV_INST_HOME = "C:\Program Files (x86)\Caphyon\Advanced Installer 21.0.1"
 $ADVINST = "${ADV_INST_HOME}\bin\x86\AdvancedInstaller.com"
 $ADVPROJECT = "${scriptPath}\ZitiDesktopEdge.aip"
 $installerVersion=(Get-Content -Path ${scriptPath}\..\version)
